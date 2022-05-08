@@ -25,7 +25,7 @@ enum AppRoute {
 
 final goRouter = GoRouter(
   initialLocation: '/',
-  debugLogDiagnostics: true,
+  // debugLogDiagnostics: true,
   routes: [
     GoRoute(
       path: '/',
