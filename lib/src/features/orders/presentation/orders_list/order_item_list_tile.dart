@@ -1,5 +1,5 @@
+import 'package:ecommerce_app/src/common_widgets/async_value_widget.dart';
 import 'package:ecommerce_app/src/common_widgets/custom_image.dart';
-import 'package:ecommerce_app/src/common_widgets/error_message_widget.dart';
 import 'package:ecommerce_app/src/constants/app_sizes.dart';
 import 'package:ecommerce_app/src/features/cart/domain/item.dart';
 import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../products/data/fake_products_repositories.dart';
+import '../../../products/domain/product.dart';
 
 /// Shows an individual order item, including price and quantity.
 class OrderItemListTile extends ConsumerWidget {
@@ -20,7 +21,8 @@ class OrderItemListTile extends ConsumerWidget {
 
     // pass productId as an argument when watching the provider
     final productValue = ref.watch(productFutureProvider(item.productId));
-    return productValue.when(
+    return AsyncValueWidget<Product?>(
+      value: productValue,
       data: (product) {
         if (product != null) {
           return Padding(
@@ -52,8 +54,6 @@ class OrderItemListTile extends ConsumerWidget {
         }
         return const SizedBox.shrink();
       },
-      error: (err, st) => Center(child: ErrorMessageWidget(err.toString())),
-      loading: () => const Center(child: CircularProgressIndicator()),
     );
   }
 }

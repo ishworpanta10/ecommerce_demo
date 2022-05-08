@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:ecommerce_app/src/common_widgets/error_message_widget.dart';
 import 'package:ecommerce_app/src/constants/app_sizes.dart';
 import 'package:ecommerce_app/src/features/products/data/fake_products_repositories.dart';
 import 'package:ecommerce_app/src/features/products/presentation/products_list/product_card.dart';
@@ -10,6 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../../../common_widgets/async_value_widget.dart';
+import '../../domain/product.dart';
 
 /// A widget that displays the list of products that match the search query.
 class ProductsGrid extends ConsumerWidget {
@@ -21,7 +23,8 @@ class ProductsGrid extends ConsumerWidget {
     // final products = productRepository.getProductsList();
     final productListValue = ref.watch(productListFutureProvider);
 
-    return productListValue.when(
+    return AsyncValueWidget<List<Product>>(
+      value: productListValue,
       data: (products) {
         if (products.isEmpty) {
           return Center(
@@ -45,8 +48,6 @@ class ProductsGrid extends ConsumerWidget {
           },
         );
       },
-      error: (err, _) => Center(child: ErrorMessageWidget(err.toString())),
-      loading: () => const Center(child: CircularProgressIndicator()),
     );
   }
 }

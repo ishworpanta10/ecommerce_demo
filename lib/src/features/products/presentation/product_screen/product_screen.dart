@@ -1,5 +1,4 @@
 import 'package:ecommerce_app/src/common_widgets/custom_image.dart';
-import 'package:ecommerce_app/src/common_widgets/error_message_widget.dart';
 import 'package:ecommerce_app/src/common_widgets/responsive_two_column_layout.dart';
 import 'package:ecommerce_app/src/constants/app_sizes.dart';
 import 'package:ecommerce_app/src/features/cart/presentation/add_to_cart/add_to_cart_widget.dart';
@@ -12,6 +11,7 @@ import 'package:ecommerce_app/src/utils/currency_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../common_widgets/async_value_widget.dart';
 import '../../../../common_widgets/empty_placeholder_widget.dart';
 import '../../../../common_widgets/responsive_center.dart';
 import '../../../reviews/presentation/product_reviews/product_reviews_list.dart';
@@ -33,26 +33,25 @@ class ProductScreen extends StatelessWidget {
 
           // pass productId as an argument when watching the provider
           final productValue = ref.watch(productFutureProvider(productId));
-
-          return productValue.when(
-              data: (product) {
-                if (product != null) {
-                  return CustomScrollView(
-                    slivers: [
-                      ResponsiveSliverCenter(
-                        padding: const EdgeInsets.all(Sizes.p16),
-                        child: ProductDetails(product: product),
-                      ),
-                      ProductReviewsList(productId: productId),
-                    ],
-                  );
-                }
-                return EmptyPlaceholderWidget(
-                  message: 'Product not found'.hardcoded,
+          return AsyncValueWidget<Product?>(
+            value: productValue,
+            data: (product) {
+              if (product != null) {
+                return CustomScrollView(
+                  slivers: [
+                    ResponsiveSliverCenter(
+                      padding: const EdgeInsets.all(Sizes.p16),
+                      child: ProductDetails(product: product),
+                    ),
+                    ProductReviewsList(productId: productId),
+                  ],
                 );
-              },
-              error: (err, st) => Center(child: ErrorMessageWidget(err.toString())),
-              loading: () => const Center(child: CircularProgressIndicator()));
+              }
+              return EmptyPlaceholderWidget(
+                message: 'Product not found'.hardcoded,
+              );
+            },
+          );
         },
       ),
     );

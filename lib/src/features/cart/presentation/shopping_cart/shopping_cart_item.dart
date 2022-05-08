@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:ecommerce_app/src/common_widgets/alert_dialogs.dart';
 import 'package:ecommerce_app/src/common_widgets/custom_image.dart';
-import 'package:ecommerce_app/src/common_widgets/error_message_widget.dart';
 import 'package:ecommerce_app/src/common_widgets/item_quantity_selector.dart';
 import 'package:ecommerce_app/src/common_widgets/responsive_two_column_layout.dart';
 import 'package:ecommerce_app/src/constants/app_sizes.dart';
@@ -13,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../common_widgets/async_value_widget.dart';
 import '../../../products/data/fake_products_repositories.dart';
 
 /// Shows a shopping cart item (or loading/error UI if needed)
@@ -36,7 +36,8 @@ class ShoppingCartItem extends ConsumerWidget {
     // pass productId as an argument when watching the provider
     final productValue = ref.watch(productFutureProvider(item.productId));
 
-    return productValue.when(
+    return AsyncValueWidget<Product?>(
+      value: productValue,
       data: (product) {
         if (product != null) {
           return Padding(
@@ -56,8 +57,6 @@ class ShoppingCartItem extends ConsumerWidget {
         }
         return const SizedBox.shrink();
       },
-      error: (err, st) => Center(child: ErrorMessageWidget(err.toString())),
-      loading: () => const Center(child: CircularProgressIndicator()),
     );
   }
 }
