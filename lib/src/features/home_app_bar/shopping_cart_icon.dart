@@ -21,7 +21,8 @@ class ShoppingCartIcon extends StatelessWidget {
             key: shoppingCartIconKey,
             icon: const Icon(Icons.shopping_cart),
             // onPressed: () => GoRouter.of(context).go('/cart'),
-            onPressed: () => context.goNamed(AppRoute.cart.name),
+            // onPressed: () => context.goNamed(AppRoute.cart.name),
+            onPressed: () => context.pushNamed(AppRoute.cart.name),
           ),
         ),
         if (cartItemsCount > 0)
