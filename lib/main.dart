@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:ecommerce_app/src/app.dart';
 import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 void main() async {
@@ -12,8 +13,11 @@ void main() async {
   await runZonedGuarded(() async {
     // turn off the # in the URLs on the web
     GoRouter.setUrlPathStrategy(UrlPathStrategy.path);
+
     // * Entry point of the app
-    runApp(const MyApp());
+    /// [ProviderScope] store the state of all the providers that we create
+
+    runApp(const ProviderScope(child: MyApp()));
 
     // * This code will present some error UI if any uncaught exception happens
     FlutterError.onError = (FlutterErrorDetails details) {

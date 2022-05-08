@@ -1,10 +1,9 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../constants/test_products.dart';
 import '../domain/product.dart';
 
 class FakeProductRepositories {
-  FakeProductRepositories._();
-  static FakeProductRepositories instance = FakeProductRepositories._();
-
   final List<Product> _products = kTestProducts;
 
   List<Product> getProductsList() {
@@ -31,3 +30,7 @@ class FakeProductRepositories {
     );
   }
 }
+
+final productRepositoryProvider = Provider<FakeProductRepositories>((ref) {
+  return FakeProductRepositories();
+});

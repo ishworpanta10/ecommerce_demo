@@ -23,6 +23,9 @@ dependencies:
 #  Route
   go_router: ^3.1.0
 
+#  state management
+  flutter_riverpod: ^2.0.0-dev.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
