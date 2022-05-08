@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/src/features/account/account_screen.dart';
 import 'package:ecommerce_app/src/features/orders_list/orders_list_screen.dart';
+import 'package:ecommerce_app/src/features/product_page/product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -10,6 +11,7 @@ import '../features/sign_in/email_password_sign_in_state.dart';
 
 enum AppRoute {
   home,
+  product,
   cart,
   orders,
   account,
@@ -25,6 +27,15 @@ final goRouter = GoRouter(
       name: AppRoute.home.name,
       builder: (context, state) => const ProductsListScreen(),
       routes: [
+        GoRoute(
+          path: 'product/:id',
+          name: AppRoute.product.name,
+          builder: (context, state) {
+            final productId = state.params['id']!;
+            return ProductScreen(productId: productId);
+          },
+          routes: [],
+        ),
         GoRoute(
           path: 'cart',
           name: AppRoute.cart.name,
