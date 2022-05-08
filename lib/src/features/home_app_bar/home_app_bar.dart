@@ -4,6 +4,7 @@ import 'package:ecommerce_app/src/features/home_app_bar/more_menu_button.dart';
 import 'package:ecommerce_app/src/features/home_app_bar/shopping_cart_icon.dart';
 import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
 import 'package:ecommerce_app/src/models/app_user.dart';
+import 'package:ecommerce_app/src/routing/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -45,7 +46,8 @@ class HomeAppBar extends StatelessWidget with PreferredSizeWidget {
             ActionTextButton(
               key: MoreMenuButton.ordersKey,
               text: 'Orders'.hardcoded,
-              onPressed: () => context.go('/orders'),
+              onPressed: () => context.goNamed(AppRoute.orders.name),
+              // onPressed: () => context.go('/orders'),
               // onPressed: () => Navigator.of(context).push(
               //   MaterialPageRoute(
               //     fullscreenDialog: true,
@@ -56,22 +58,13 @@ class HomeAppBar extends StatelessWidget with PreferredSizeWidget {
             ActionTextButton(
               key: MoreMenuButton.accountKey,
               text: 'Account'.hardcoded,
-              onPressed: () => context.go('/account'),
+              onPressed: () => context.goNamed(AppRoute.account.name),
             ),
           ] else
             ActionTextButton(
               key: MoreMenuButton.signInKey,
               text: 'Sign In'.hardcoded,
-              onPressed: () => context.go('/signIn'),
-
-              // onPressed: () => Navigator.of(context).push(
-              //   MaterialPageRoute(
-              //     fullscreenDialog: true,
-              //     builder: (_) => const EmailPasswordSignInScreen(
-              //       formType: EmailPasswordSignInFormType.signIn,
-              //     ),
-              //   ),
-              // ),
+              onPressed: () => context.goNamed(AppRoute.signIn.name),
             )
         ],
       );
