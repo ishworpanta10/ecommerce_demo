@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/src/features/account/account_screen.dart';
+import 'package:ecommerce_app/src/features/not_found/not_found_screen.dart';
 import 'package:ecommerce_app/src/features/orders_list/orders_list_screen.dart';
 import 'package:ecommerce_app/src/features/product_page/product_screen.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,6 @@ final goRouter = GoRouter(
             final productId = state.params['id']!;
             return ProductScreen(productId: productId);
           },
-          routes: [],
         ),
         GoRoute(
           path: 'cart',
@@ -79,4 +79,5 @@ final goRouter = GoRouter(
       ],
     ),
   ],
+  errorBuilder: (context, state) => const NotFoundScreen(),
 );
