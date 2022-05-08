@@ -12,7 +12,6 @@ void main() async {
   await runZonedGuarded(() async {
     // turn off the # in the URLs on the web
     GoRouter.setUrlPathStrategy(UrlPathStrategy.path);
-
     // * Entry point of the app
     runApp(const MyApp());
 
@@ -20,7 +19,6 @@ void main() async {
     FlutterError.onError = (FlutterErrorDetails details) {
       FlutterError.presentError(details);
     };
-
     ErrorWidget.builder = (FlutterErrorDetails details) {
       return Scaffold(
         appBar: AppBar(
@@ -32,6 +30,6 @@ void main() async {
     };
   }, (Object error, StackTrace stack) {
     // * Log any errors to console
-    debugPrint('error.toString : ${error.toString()}');
+    debugPrint(error.toString());
   });
 }
