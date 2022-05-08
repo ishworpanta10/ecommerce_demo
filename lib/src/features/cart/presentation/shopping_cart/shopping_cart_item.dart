@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:ecommerce_app/src/common_widgets/alert_dialogs.dart';
 import 'package:ecommerce_app/src/common_widgets/custom_image.dart';
+import 'package:ecommerce_app/src/common_widgets/error_message_widget.dart';
 import 'package:ecommerce_app/src/common_widgets/item_quantity_selector.dart';
 import 'package:ecommerce_app/src/common_widgets/responsive_two_column_layout.dart';
 import 'package:ecommerce_app/src/constants/app_sizes.dart';
@@ -32,23 +33,31 @@ class ShoppingCartItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final productRepository = ref.watch(productRepositoryProvider);
+    // pass productId as an argument when watching the provider
+    final productValue = ref.watch(productFutureProvider(item.productId));
 
-    final Product product = productRepository.getProduct(item.productId)!;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: Sizes.p8),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(Sizes.p16),
-          child: ShoppingCartItemContents(
-            product: product,
-            item: item,
-            itemIndex: itemIndex,
-            isEditable: isEditable,
-          ),
-        ),
-      ),
+    return productValue.when(
+      data: (product) {
+        if (product != null) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: Sizes.p8),
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(Sizes.p16),
+                child: ShoppingCartItemContents(
+                  product: product,
+                  item: item,
+                  itemIndex: itemIndex,
+                  isEditable: isEditable,
+                ),
+              ),
+            ),
+          );
+        }
+        return const SizedBox.shrink();
+      },
+      error: (err, st) => Center(child: ErrorMessageWidget(err.toString())),
+      loading: () => const Center(child: CircularProgressIndicator()),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:ecommerce_app/src/common_widgets/error_message_widget.dart';
 import 'package:ecommerce_app/src/constants/app_sizes.dart';
 import 'package:ecommerce_app/src/features/products/data/fake_products_repositories.dart';
 import 'package:ecommerce_app/src/features/products/presentation/products_list/product_card.dart';
@@ -16,30 +17,37 @@ class ProductsGrid extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final productRepository = ref.watch(productRepositoryProvider);
+    // final productRepository = ref.watch(productRepositoryProvider);
+    // final products = productRepository.getProductsList();
+    final productListValue = ref.watch(productListFutureProvider);
 
-    final products = productRepository.getProductsList();
-
-    return products.isEmpty
-        ? Center(
+    return productListValue.when(
+      data: (products) {
+        if (products.isEmpty) {
+          return Center(
             child: Text(
               'No products found'.hardcoded,
               style: Theme.of(context).textTheme.headline4,
             ),
-          )
-        : ProductsLayoutGrid(
-            itemCount: products.length,
-            itemBuilder: (_, index) {
-              final product = products[index];
-              return ProductCard(
-                product: product,
-                onPressed: () => context.goNamed(
-                  AppRoute.product.name,
-                  params: {'id': product.id},
-                ),
-              );
-            },
           );
+        }
+        return ProductsLayoutGrid(
+          itemCount: products.length,
+          itemBuilder: (_, index) {
+            final product = products[index];
+            return ProductCard(
+              product: product,
+              onPressed: () => context.goNamed(
+                AppRoute.product.name,
+                params: {'id': product.id},
+              ),
+            );
+          },
+        );
+      },
+      error: (err, _) => Center(child: ErrorMessageWidget(err.toString())),
+      loading: () => const Center(child: CircularProgressIndicator()),
+    );
   }
 }
 
