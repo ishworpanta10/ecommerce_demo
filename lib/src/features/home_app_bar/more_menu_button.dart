@@ -1,10 +1,9 @@
-import 'package:ecommerce_app/src/features/account/account_screen.dart';
-import 'package:ecommerce_app/src/features/orders_list/orders_list_screen.dart';
 import 'package:ecommerce_app/src/features/sign_in/email_password_sign_in_screen.dart';
 import 'package:ecommerce_app/src/features/sign_in/email_password_sign_in_state.dart';
 import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
 import 'package:ecommerce_app/src/models/app_user.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 enum PopupMenuOption {
   signIn,
@@ -63,20 +62,23 @@ class MoreMenuButton extends StatelessWidget {
             );
             break;
           case PopupMenuOption.orders:
-            Navigator.of(context).push(
+            context.go('/orders');
+
+            /* Navigator.of(context).push(
               MaterialPageRoute(
                 fullscreenDialog: true,
                 builder: (_) => const OrdersListScreen(),
               ),
-            );
+            );*/
             break;
           case PopupMenuOption.account:
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                fullscreenDialog: true,
-                builder: (_) => const AccountScreen(),
-              ),
-            );
+            context.go('/account');
+            // Navigator.of(context).push(
+            //   MaterialPageRoute(
+            //     fullscreenDialog: true,
+            //     builder: (_) => const AccountScreen(),
+            //   ),
+            // );
             break;
         }
       },
