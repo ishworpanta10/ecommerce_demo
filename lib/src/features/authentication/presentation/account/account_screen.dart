@@ -14,6 +14,16 @@ class AccountScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen<AsyncValue<void>>(accountScreenControllerProvider, (previous, next) {
+      if (!next.isRefreshing && next.hasError) {
+        showExceptionAlertDialog(
+          context: context,
+          title: 'Error'.hardcoded,
+          exception: next.error,
+        );
+        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(next.error.toString())));
+      }
+    });
     final state = ref.watch(accountScreenControllerProvider);
     return Scaffold(
       appBar: AppBar(
@@ -33,7 +43,7 @@ class AccountScreen extends ConsumerWidget {
                     if (logout == true) {
                       await ref.read(accountScreenControllerProvider.notifier).signOut();
                       //TODO: only pop on success
-                      Navigator.of(context).pop();
+                      // Navigator.of(context).pop();
                     }
                   },
           ),
