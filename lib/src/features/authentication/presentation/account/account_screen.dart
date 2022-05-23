@@ -5,6 +5,7 @@ import 'package:ecommerce_app/src/constants/app_sizes.dart';
 import 'package:ecommerce_app/src/features/authentication/domain/app_user.dart';
 import 'package:ecommerce_app/src/features/authentication/presentation/account/account_screen_controller.dart';
 import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
+import 'package:ecommerce_app/src/utils/async_value_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,14 +16,15 @@ class AccountScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen<AsyncValue<void>>(accountScreenControllerProvider, (previous, next) {
-      if (!next.isRefreshing && next.hasError) {
+      next.showAlertDialogOnError(context);
+      /*if (!next.isRefreshing && next.hasError) {
         showExceptionAlertDialog(
           context: context,
           title: 'Error'.hardcoded,
           exception: next.error,
         );
         // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(next.error.toString())));
-      }
+      }*/
     });
     final state = ref.watch(accountScreenControllerProvider);
     return Scaffold(
