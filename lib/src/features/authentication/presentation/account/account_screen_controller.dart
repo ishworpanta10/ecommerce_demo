@@ -7,15 +7,18 @@ class AccountScreenController extends StateNotifier<AsyncValue<void>> {
   final FakeAuthRepository fakeAuthRepository;
 
   Future<bool> signOut() async {
-    try {
-      state = const AsyncValue<void>.loading();
-      await fakeAuthRepository.signOut();
-      state = const AsyncValue<void>.data(null);
-      return true;
-    } catch (err) {
-      state = AsyncValue<void>.error(err);
-      return false;
-    }
+    // try {
+    //   state = const AsyncValue<void>.loading();
+    //   await fakeAuthRepository.signOut();
+    //   state = const AsyncValue<void>.data(null);
+    //   return true;
+    // } catch (err) {
+    //   state = AsyncValue<void>.error(err);
+    //   return false;
+    // }
+    state = const AsyncValue<void>.loading();
+    state = await AsyncValue.guard(() => fakeAuthRepository.signOut());
+    return state.hasError == false;
   }
 }
 
